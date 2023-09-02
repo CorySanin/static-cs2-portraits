@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+    static-cs2:
+        container_name: static-cs2
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - 4443:4443
+        volumes:
+            - ./keys:/usr/src/app/keys
+        dns:
+            - 8.8.8.8
+            - 4.4.4.4
