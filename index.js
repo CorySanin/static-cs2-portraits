@@ -9,6 +9,7 @@ const sharp = require('sharp');
 
 const KEYPATH = path.join('keys', 'static-cs2-key.pem');
 const CERTPATH = path.join('keys', 'static-cs2-cert.pem');
+const CRTPATH = path.join('keys', 'static-cs2-cert.crt');
 
 let config = {
     unsecPort: process.env.UNSECPORT || 8080,
@@ -18,6 +19,14 @@ let config = {
 
 let app = new Express();
 let servers = [];
+
+app.get('/cert.pem', (req, res) => {
+    res.sendFile(path.join(process.cwd(), CERTPATH));
+});
+
+app.get('/cert.crt', (req, res) => {
+    res.sendFile(path.join(process.cwd(), CRTPATH));
+});
 
 app.get('*', async (req, res) => {
     let domain = req.hostname;
@@ -100,6 +109,15 @@ function runCommand(command, args = []) {
             `subjectAltName = ${config.domains.map(domain => `DNS:${domain}`).join(', ')}`,
             '-subj',
             `/C=US/ST=Wisconsin/L=Madison/CN=Sanin`
+        ]);
+        await runCommand('openssl', [
+            'x509',
+            '-outform',
+            'der',
+            '-in',
+            CERTPATH,
+            '-out',
+            CRTPATH
         ]);
     }
 
