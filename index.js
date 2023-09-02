@@ -14,7 +14,7 @@ const CRTPATH = path.join('keys', 'static-cs2-cert.crt');
 let config = {
     unsecPort: process.env.UNSECPORT || 8080,
     port: process.env.PORT || 4443,
-    domains: (process.env.DOMAINS || 'cdn.cloudflare.steamstatic.com').split(',')
+    domains: (process.env.DOMAINS || 'cdn.cloudflare.steamstatic.com,cdn.akamai.steamstatic.com').split(',')
 }
 
 let app = new Express();
