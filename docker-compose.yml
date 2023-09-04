@@ -7,7 +7,8 @@ services:
             context: ./
             dockerfile: Dockerfile
         ports:
-            - 4443:4443
+            - 443:4443
+            - 80:8080
         volumes:
             - ./keys:/usr/src/app/keys
         dns:
