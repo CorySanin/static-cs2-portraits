@@ -5,9 +5,10 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 ENV NPM_CONFIG_LOGLEVEL warn
-RUN apk add --no-cache make g++ vips-cpp vips-dev && \
+RUN apk add --no-cache make g++ && \
+  apk add --no-cache vips-cpp vips-dev --repository https://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
   npm install -g node-gyp
-RUN npm ci --only=production || npm ci --only=production --build-from-source --verbose --foreground-scripts sharp
+RUN npm ci --only=production || npm ci --only=production --build-from-source
 
 COPY . .
 
