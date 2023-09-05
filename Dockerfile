@@ -9,7 +9,7 @@ RUN npm ci --only=production
 
 COPY . .
 
-FROM node:lts-alpine3.18
+FROM node:lts-alpine3.18 as deploy
 
 HEALTHCHECK  --timeout=3s \
   CMD curl --fail http://localhost:8080/healthcheck || exit 1
