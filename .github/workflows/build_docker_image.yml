@@ -41,6 +41,14 @@ jobs:
           registry: ${{ env.GH_REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.REPOSITORY }}:latest
+            ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Build and push
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -48,9 +56,8 @@ jobs:
         with:
           target: deploy
           push: true
-          tags: |
-            ${{ env.DOCKER_USERNAME }}/${{ env.REPOSITORY }}:latest
-            ${{ env.GH_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           cache-from: type=gha,scope=${{ github.workflow }}
           cache-to: type=gha,mode=max,scope=${{ github.workflow }}
