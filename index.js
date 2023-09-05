@@ -28,6 +28,10 @@ app.get('/cert.crt', (req, res) => {
     res.sendFile(path.join(process.cwd(), CRTPATH));
 });
 
+app.get('/healthcheck', (req, res) => {
+    res.send('I\'m online.');
+});
+
 app.get('*', async (req, res) => {
     let domain = req.hostname;
     if (config.domains.indexOf(domain) >= 0) {
@@ -108,7 +112,7 @@ function runCommand(command, args = []) {
             '-addext',
             `subjectAltName = ${config.domains.map(domain => `DNS:${domain}`).join(', ')}`,
             '-subj',
-            `/C=US/ST=Wisconsin/L=Madison/CN=Sanin`
+            `/C=US/ST=Wisconsin/L=Madison/CN=static-cs2-portraits`
         ]);
         await runCommand('openssl', [
             'x509',
@@ -125,9 +129,8 @@ function runCommand(command, args = []) {
         key: await fsp.readFile(KEYPATH, { encoding: 'utf8' }),
         cert: await fsp.readFile(CERTPATH, { encoding: 'utf8' })
     }
-
     servers.push(https.createServer(options, app).listen(config.port));
-    console.log(`static-cs2-portraits listening on port ${config.port}!`)
+    console.log(`static-cs2-portraits listening on port ${config.port}!`);
 })();
 
 servers.push(app.listen(config.unsecPort, () => console.log(`static-cs2-portraits listening on port ${config.unsecPort}!`)));
@@ -135,5 +138,5 @@ servers.push(app.listen(config.unsecPort, () => console.log(`static-cs2-portrait
 process.on('SIGTERM', () => {
     servers.forEach(serv => {
         serv.close();
-    })
+    });
 });
