@@ -5,6 +5,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 ENV NPM_CONFIG_LOGLEVEL warn
+RUN apk add gcc g++ --no-cache vips gcc && \
+  npm install -g node-gyp
 RUN npm ci --only=production
 
 COPY . .
@@ -19,7 +21,7 @@ EXPOSE 8080
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache openssl curl && \
+RUN apk add --no-cache openssl vips curl && \
   chown -R node:node .
 
 COPY --from=install /usr/src/app /usr/src/app/
