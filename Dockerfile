@@ -7,7 +7,7 @@ COPY package*.json ./
 ENV NPM_CONFIG_LOGLEVEL warn
 RUN apk add --no-cache make g++ vips-cpp vips-dev && \
   npm install -g node-gyp
-RUN npm install --build-from-source
+RUN npm ci --only=production || npm ci --only=production --build-from-source --verbose --foreground-scripts sharp
 
 COPY . .
 
