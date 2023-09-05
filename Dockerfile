@@ -5,10 +5,11 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 ENV NPM_CONFIG_LOGLEVEL warn
-RUN apk add --no-cache make g++ && \
+RUN npm ci --only=production || (\
+  apk add --no-cache make g++ && \
   apk add --no-cache vips-cpp vips-dev --repository https://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
-  npm install -g node-gyp
-RUN npm ci --only=production || npm ci --only=production --build-from-source
+  npm install -g node-gyp && \
+  npm ci --only=production --build-from-source )
 
 COPY . .
 
@@ -22,7 +23,8 @@ EXPOSE 8080
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache openssl vips curl && \
+RUN apk add --no-cache openssl curl && \
+  apk add --no-cache vips-cpp vips-dev --repository https://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
   chown -R node:node .
 
 COPY --from=install /usr/src/app /usr/src/app/
