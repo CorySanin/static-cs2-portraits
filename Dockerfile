@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 ENV NPM_CONFIG_LOGLEVEL warn
-RUN apk add gcc g++ --no-cache vips gcc && \
+RUN apk add --no-cache make g++ vips && \
   npm install -g node-gyp
 RUN npm ci --only=production
 
