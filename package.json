@@ -1,6 +1,6 @@
 {
   "name": "static-cs2-portraits",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "I'm not looking at animated profile pictures in my competitive shooter.",
   "main": "index.js",
   "scripts": {

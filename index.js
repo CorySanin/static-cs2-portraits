@@ -86,6 +86,12 @@ function runCommand(command, args = []) {
     });
 }
 
+function shutdown() {
+    console.log('\nShutting down...');
+    servers.forEach(serv => {
+        serv.close();
+    });
+}
 
 (async () => {
     try {
@@ -135,8 +141,5 @@ function runCommand(command, args = []) {
 
 servers.push(app.listen(config.unsecPort, () => console.log(`static-cs2-portraits listening on port ${config.unsecPort}!`)));
 
-process.on('SIGTERM', () => {
-    servers.forEach(serv => {
-        serv.close();
-    });
-});
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
