@@ -12,7 +12,7 @@ This project intentionally bypasses the very security that TLS provides. Certifi
 verify that web traffic goes to the right place. We don't want CS2 to get avatars from the right
 place, we want to get them from the static-cs2-portraits server. It's easy enough to route traffic
 arbitrarily using the hosts file, but without a valid cert for the domain the connection will
-correctly report the connection as insecure.
+correctly be reported as insecure.
 
 If you install static-cs2-portrait's certificate authority, applications will act no differently
 than if you were to connect to Valve's server directly. This is necessary for tricking CS2 into
