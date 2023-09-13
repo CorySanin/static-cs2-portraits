@@ -1,3 +1,7 @@
+# Archived!
+As of 2023-09-13, Valve added the option to disable animated avatars. This project is no
+longer necessary. Thanks Valve!
+
 # static-cs2-portraits
 Disable animated Steam profile pictures in Counter-Strike 2
 
